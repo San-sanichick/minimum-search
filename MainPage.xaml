@@ -1,0 +1,40 @@
+﻿<Page
+    x:Class="minimum.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:minimum"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <canvas:CanvasControl x:Name="canvasControl" Draw="canvasControl_Draw" ClearColor="Gray" Margin="607,53,53,53" />
+        <ComboBox 
+            x:Name="MethodsComboBox" 
+            Margin="122,131,0,0" 
+            Width="340" Height="59" 
+            ItemsSource="{x:Bind searchMethods}" 
+            SelectedItem="{x:Bind selectedMethod, Mode=TwoWay}" 
+            FontSize="22" 
+            PlaceholderText="Choose method..."/>
+        
+        <TextBox 
+            HorizontalAlignment="Left" 
+            Margin="155,267,0,0" 
+            TextWrapping="Wrap" 
+            Text="{x:Bind precision, Mode=TwoWay}" 
+            VerticalAlignment="Top" 
+            Height="58" 
+            Width="275" 
+            FontSize="22"/>
+        
+        <Button x:Name="SearchButton" Content="Search" Margin="155,527,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
+        <TextBlock x:Name="ResultTextBlock" HorizontalAlignment="Left" Margin="155,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="115" Width="273" FontSize="22"/>
+        
+        
+        <TextBlock HorizontalAlignment="Left" Margin="155,225,0,0" TextWrapping="Wrap" Text="Precision:" VerticalAlignment="Top" FontSize="22"/>
+        <TextBlock HorizontalAlignment="Left" Margin="155,346,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
+    </Grid>
+</Page>
