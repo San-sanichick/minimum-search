@@ -49,7 +49,7 @@ namespace minimum.Methods
                 double minVal = Double.MaxValue;
                 int kIndex = 0;
 
-                for (int j = 1; j < L - 1; j++)
+                for (int j = 1; j <= L - 1; j++)
                 {
                     if (minVal > funcValues[j])
                     {
@@ -73,7 +73,7 @@ namespace minimum.Methods
                     rangeEnd   = segments[L - 2];
                 }
 
-                if (Math.Abs(rangeEnd - rangeStart) < eps)
+                if (Math.Abs(rangeEnd - rangeStart) <= eps)
                 {
                     result = (rangeStart + rangeEnd) / 2;
                     resultFuncValue = minVal;
@@ -81,6 +81,7 @@ namespace minimum.Methods
                     break;
                 }
             }
+            Debug.WriteLine($"{rangeEnd - rangeStart}\n{(rangeEnd - rangeStart) < eps}");
 
             return (result, resultFuncValue, actualIterations);
         }

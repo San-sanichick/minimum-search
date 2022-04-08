@@ -22,7 +22,7 @@ namespace minimum.Methods
             this.b = b;
             this.eps = eps;
             this.L = L;
-            N = (int)Math.Round(CalcNumberOfIterations(a, b, L, eps));
+            N = (int)Math.Ceiling(CalcNumberOfIterations(a, b, L, eps));
             this.f = f;
         }
 

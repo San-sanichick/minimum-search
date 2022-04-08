@@ -1,4 +1,6 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas.Geometry;
+using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using minimum.Methods;
 using System;
 using System.Collections.ObjectModel;
@@ -20,11 +22,10 @@ namespace minimum
     {
 
         private AbstractSearch search;
-        private double a = -Math.PI / 7;
-        private double b = Math.PI / 2;
-        private double eps = 0.001;
+        private readonly double A = -Math.PI / 7;
+        private readonly double B = Math.PI / 2;
 
-        private string precision = "0.001";
+        private double eps = 0.001;
 
         private double resultNumeric   = 0;
         private double resultFuncValue = 0;
@@ -32,7 +33,10 @@ namespace minimum
         private int scale = 200, offset = 150;
 
         ObservableCollection<string> searchMethods { get; } = new ObservableCollection<string>();
+        ObservableCollection<double> precisions { get; } = new ObservableCollection<double>();
+        
         string selectedMethod = null;
+        double selectedPrecision = 0;
 
         private double f(double x)
         {
@@ -47,13 +51,43 @@ namespace minimum
             searchMethods.Add("Division search");
             searchMethods.Add("Fibonacci search");
             searchMethods.Add("Golden ratio search");
+
+            precisions.Add(0.001);
+            precisions.Add(0.000001);
+            precisions.Add(0.000000000001);
         }
 
         void canvasControl_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             var canvas = args.DrawingSession;
 
-            for (double x = a; x <= b; x += 0.01)
+            var fontStyle = new CanvasTextFormat();
+            fontStyle.FontSize = 12;
+            
+            canvas.DrawLine(
+                x0: ((float)A * scale) + offset,
+                y0: offset,
+                x1: ((float)B * scale) + offset,
+                y1: offset,
+                color: Colors.Black);
+
+            canvas.DrawLine(
+                x0: offset, 
+                y0: offset, 
+                x1: offset, 
+                y1: offset + (offset * 3),
+                color: Colors.Black);
+
+            for (double i = -Math.PI / 8; i < Math.PI / 2; i += (Math.PI / 16))
+            {
+                double x = i * scale + offset;
+
+                canvas.DrawCircle((float)x, offset, 3, Colors.Blue);
+                canvas.DrawText(String.Format("{0:F2}", i), (float)x, offset - 20, Colors.Black, fontStyle);
+            }
+
+
+            for (double x = A; x <= B; x += 0.01)
             {
                 double y = f(x);
 
@@ -64,6 +98,25 @@ namespace minimum
 
                 if (resultNumeric != 0)
                 {
+                    CanvasStrokeStyle strokeStyle = new CanvasStrokeStyle
+                    {
+                        DashStyle = CanvasDashStyle.DashDot
+                    };
+
+                    canvas.DrawLine(
+                            (float)(resultNumeric * scale + offset),
+                            (float)(resultFuncValue * -scale + offset),
+                            (float)(resultNumeric * scale + offset),
+                            offset, 
+                            Colors.Green, 0.5F, strokeStyle);
+
+                    canvas.DrawLine(
+                            (float)(resultNumeric * scale + offset),
+                            (float)(resultFuncValue * -scale + offset),
+                            (float)A * scale + offset,
+                            (float)(resultFuncValue * -scale + offset), 
+                            Colors.Green, 0.5F, strokeStyle);
+
                     canvas.DrawCircle(
                             (float)(resultNumeric * scale + offset), 
                             (float)(resultFuncValue * -scale + offset), 
@@ -75,27 +128,26 @@ namespace minimum
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            eps = double.Parse(precision, CultureInfo.InvariantCulture);
+            eps = (double)PrecisionComboBox.SelectedValue;
 
             switch (selectedMethod)
             {
                 case "Uniform search":
-                    search = new UniformSearch(a, b, eps, 10, f);
+                    search = new UniformSearch(A, B, eps, 10, f);
                     break;
                 case "Division search":
-                    search = new DivisionSearch(a, b, eps, f);
+                    search = new DivisionSearch(A, B, eps, f);
                     break;
                 case "Fibonacci search":
-                    search = new FibonacciSearch(a, b, eps, f);
+                    search = new FibonacciSearch(A, B, eps, f);
                     break;
                 case "Golden ratio search":
-                    search = new GoldenRatioSearch(a, b, eps, f);
+                    search = new GoldenRatioSearch(A, B, eps, f);
                     break;
                 default:
                     return;
             }
 
-            //Debug.WriteLine(search.N);
             (double x, double y, int N) res = search.Search();
 
             resultNumeric = res.x;

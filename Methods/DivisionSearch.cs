@@ -48,7 +48,7 @@ namespace minimum.Methods
                     rangeStart = x0;
                 }
 
-                if ((rangeEnd - rangeStart) < eps)
+                if ((rangeEnd - rangeStart) <= eps)
                 {
                     result = (rangeStart + rangeEnd) / 2;
                     resultFuncValue = f(result);

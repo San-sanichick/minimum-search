@@ -16,25 +16,26 @@
             Margin="122,131,0,0" 
             Width="340" Height="59" 
             ItemsSource="{x:Bind searchMethods}" 
+            SelectedIndex="0"
             SelectedItem="{x:Bind selectedMethod, Mode=TwoWay}" 
             FontSize="22" 
             PlaceholderText="Choose method..."/>
-        
-        <TextBox 
-            HorizontalAlignment="Left" 
-            Margin="155,267,0,0" 
-            TextWrapping="Wrap" 
-            Text="{x:Bind precision, Mode=TwoWay}" 
-            VerticalAlignment="Top" 
-            Height="58" 
+
+        <TextBlock HorizontalAlignment="Left" Margin="155,225,0,0" TextWrapping="Wrap" Text="Precision:" VerticalAlignment="Top" FontSize="22"/>
+        <ComboBox 
+            x:Name="PrecisionComboBox" 
+            Margin="155,259,0,0" 
             Width="275" 
-            FontSize="22"/>
-        
-        <Button x:Name="SearchButton" Content="Search" Margin="155,527,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
+            Height="59" 
+            FontSize="22" 
+            ItemsSource="{x:Bind precisions}"
+            SelectedIndex="0"
+            SelectedItem="{x:Bind selectedPrecision}" 
+            PlaceholderText="Choose precision..."/>
+
+        <TextBlock HorizontalAlignment="Left" Margin="155,346,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
         <TextBlock x:Name="ResultTextBlock" HorizontalAlignment="Left" Margin="155,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="115" Width="273" FontSize="22"/>
         
-        
-        <TextBlock HorizontalAlignment="Left" Margin="155,225,0,0" TextWrapping="Wrap" Text="Precision:" VerticalAlignment="Top" FontSize="22"/>
-        <TextBlock HorizontalAlignment="Left" Margin="155,346,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
+        <Button x:Name="SearchButton" Content="Search" Margin="155,527,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
     </Grid>
 </Page>
