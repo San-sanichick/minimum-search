@@ -29,8 +29,9 @@ namespace minimum
 
         private double resultNumeric   = 0;
         private double resultFuncValue = 0;
-
-        private int scale = 200, offset = 150;
+        
+        private readonly int scale = 200;
+        private readonly int offset = 125;
 
         ObservableCollection<string> searchMethods { get; } = new ObservableCollection<string>();
         ObservableCollection<double> precisions { get; } = new ObservableCollection<double>();
@@ -38,7 +39,7 @@ namespace minimum
         string selectedMethod = "Uniform search";
         double selectedPrecision = 0.001;
 
-        private double f(double x)
+        private double F(double x)
         {
             return -(Math.Sin(x) + Math.Cos(x));
         }
@@ -66,41 +67,58 @@ namespace minimum
                 FontSize = 12
             };
 
-            canvas.DrawLine(x0: ((float)A * scale) + offset,
-                            y0: offset,
-                            x1: ((float)B * scale) + offset,
-                            y1: offset,
+            float widthDependantOffset  = (float)canvasControl.ActualWidth  / 500 * offset;
+            float heightDependantOffset = (float)canvasControl.ActualHeight / 500 * offset;
+
+            float widthDependantScale  = (float)canvasControl.ActualWidth  / 500 * scale;
+            float heightDependantScale = (float)canvasControl.ActualHeight / 500 * scale;
+
+            canvas.DrawLine(x0: ((float)A * widthDependantScale) + widthDependantOffset,
+                            y0: heightDependantOffset,
+                            x1: ((float)B * widthDependantScale) + widthDependantOffset,
+                            y1: heightDependantOffset,
                             color: Colors.Black);
 
-            canvas.DrawLine(x0: offset,
-                            y0: offset,
-                            x1: offset,
-                            y1: offset + (offset * 2),
+            canvas.DrawLine(x0: widthDependantOffset,
+                            y0: heightDependantOffset,
+                            x1: widthDependantOffset,
+                            y1: heightDependantOffset + (heightDependantOffset * 2.5F),
                             color: Colors.Black);
 
             for (double i = -Math.PI / 8; i < Math.PI / 2; i += (Math.PI / 16))
             {
-                double x = i * scale + offset;
+                double x = i * widthDependantScale + widthDependantOffset;
 
                 canvas.FillCircle((float)x,
-                                  offset,
+                                  heightDependantOffset,
                                   3,
                                   Colors.Blue);
                 
                 canvas.DrawText(string.Format("{0:F2}", i),
                                 (float)x,
-                                offset - 20,
+                                heightDependantOffset - 20,
                                 Colors.Black,
                                 fontStyle);
             }
 
+            canvas.FillCircle(widthDependantOffset,
+                              ((float)F(0) * -heightDependantScale) + heightDependantOffset,
+                              4,
+                              Colors.Blue);
+
+            canvas.DrawText(string.Format("{0:F2}", -1),
+                                widthDependantOffset - 35,
+                                ((float)F(0) * -heightDependantScale) + heightDependantOffset - 10,
+                                Colors.Black,
+                                fontStyle);
+
 
             for (double x = A; x <= B; x += 0.01)
             {
-                double y = f(x);
+                double y = F(x);
 
-                double newX = x * scale + offset;
-                double newY = y * -scale + offset;
+                double newX = x *  widthDependantScale  + widthDependantOffset;
+                double newY = y * -heightDependantScale + heightDependantOffset;
 
                 canvas.DrawRectangle((float)newX, (float)newY, 1, 1, Colors.Black);
 
@@ -113,34 +131,35 @@ namespace minimum
                     DashStyle = CanvasDashStyle.DashDot
                 };
 
-                canvas.DrawLine(
-                        (float)(resultNumeric * scale + offset),
-                        (float)(resultFuncValue * -scale + offset),
-                        (float)(resultNumeric * scale + offset),
-                        offset, 
-                        Colors.Green, 0.5F, strokeStyle);
-
-                canvas.DrawLine((float)((resultNumeric * scale) + offset),
-                                (float)(resultFuncValue * -scale + offset),
-                                offset,
-                                (float)(resultFuncValue * -scale + offset),
+                canvas.DrawLine((float)(resultNumeric   *  widthDependantScale + widthDependantOffset),
+                                (float)(resultFuncValue * -heightDependantScale + heightDependantOffset),
+                                (float)(resultNumeric   *  widthDependantScale + widthDependantOffset),
+                                heightDependantOffset,
                                 Colors.Green,
                                 0.5F,
                                 strokeStyle);
 
-                canvas.FillCircle(offset,
-                                  (float)(resultFuncValue * -scale + offset),
+                canvas.DrawLine((float)((resultNumeric   * widthDependantScale) + widthDependantOffset),
+                                (float)((resultFuncValue * -heightDependantScale) + heightDependantOffset),
+                                widthDependantOffset,
+                                (float)(resultFuncValue * -heightDependantScale + heightDependantOffset),
+                                Colors.Green,
+                                0.5F,
+                                strokeStyle);
+
+                canvas.FillCircle(widthDependantOffset,
+                                  (float)(resultFuncValue * -heightDependantScale + heightDependantOffset),
                                   4,
                                   Colors.Green);
 
                 canvas.DrawText(string.Format("{0:F2}", resultFuncValue),
-                                offset - 35,
-                                (float)(resultFuncValue * -scale + offset) - 10,
+                                widthDependantOffset - 35,
+                                (float)(resultFuncValue * -heightDependantScale + heightDependantOffset) - 10,
                                 Colors.Black,
                                 fontStyle);
 
-                canvas.FillCircle((float)(resultNumeric * scale + offset),
-                                  (float)(resultFuncValue * -scale + offset),
+                canvas.FillCircle((float)(resultNumeric   *  widthDependantScale + widthDependantOffset),
+                                  (float)(resultFuncValue * -heightDependantScale + heightDependantOffset),
                                   4,
                                   Colors.Red);
             }
@@ -148,21 +167,21 @@ namespace minimum
 
         private void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            eps = (double)PrecisionComboBox.SelectedValue;
+            eps = selectedPrecision;
 
             switch (selectedMethod)
             {
                 case "Uniform search":
-                    search = new UniformSearch(A, B, eps, 10, f);
+                    search = new UniformSearch(A, B, eps, 10, F);
                     break;
                 case "Division search":
-                    search = new DivisionSearch(A, B, eps, f);
+                    search = new DivisionSearch(A, B, eps, F);
                     break;
                 case "Fibonacci search":
-                    search = new FibonacciSearch(A, B, eps, f);
+                    search = new FibonacciSearch(A, B, eps, F);
                     break;
                 case "Golden ratio search":
-                    search = new GoldenRatioSearch(A, B, eps, f);
+                    search = new GoldenRatioSearch(A, B, eps, F);
                     break;
                 default:
                     return;

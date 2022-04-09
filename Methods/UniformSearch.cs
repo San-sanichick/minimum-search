@@ -78,7 +78,7 @@ namespace minimum.Methods
                 if (Math.Abs(br - ar) <= eps)
                 {
                     result = (ar + br) / 2;
-                    resultFuncValue = minVal;
+                    resultFuncValue = f(result);
                     actualIterations = i;
                     break;
                 }

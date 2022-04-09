@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="683" Width="1111">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
         <canvas:CanvasControl x:Name="canvasControl" Draw="canvasControl_Draw" ClearColor="Gray" Margin="381,53,53,53" />
@@ -33,7 +33,7 @@
             SelectedItem="{x:Bind selectedPrecision, Mode=TwoWay}" 
             PlaceholderText="Choose precision..."/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="55,318,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
+        <TextBlock HorizontalAlignment="Left" Margin="55,318,0,378" TextWrapping="Wrap" Text="Result:" FontSize="22"/>
         <TextBlock x:Name="ResultTextBlock" HorizontalAlignment="Left" Margin="55,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="115" Width="273" FontSize="22"/>
 
         <Button x:Name="SearchButton" Content="Search" Margin="55,491,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
