@@ -7,35 +7,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Height="683" Width="1111">
 
     <Grid>
-        <canvas:CanvasControl x:Name="canvasControl" Draw="canvasControl_Draw" ClearColor="Gray" Margin="607,53,53,53" />
+        <canvas:CanvasControl x:Name="canvasControl" Draw="canvasControl_Draw" ClearColor="Gray" Margin="381,53,53,53" />
+
+        <TextBlock HorizontalAlignment="Left" Margin="55,61,0,0" TextWrapping="Wrap" Text="Method:" VerticalAlignment="Top" FontSize="22"/>
         <ComboBox 
             x:Name="MethodsComboBox" 
-            Margin="122,131,0,0" 
-            Width="340" Height="59" 
-            ItemsSource="{x:Bind searchMethods}" 
-            SelectedIndex="0"
+            Margin="55,95,0,0" 
+            Width="275" Height="59" 
+            ItemsSource="{x:Bind searchMethods}"
             SelectedItem="{x:Bind selectedMethod, Mode=TwoWay}" 
             FontSize="22" 
             PlaceholderText="Choose method..."/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="155,225,0,0" TextWrapping="Wrap" Text="Precision:" VerticalAlignment="Top" FontSize="22"/>
+        <TextBlock HorizontalAlignment="Left" Margin="55,189,0,0" TextWrapping="Wrap" Text="Precision:" VerticalAlignment="Top" FontSize="22"/>
         <ComboBox 
             x:Name="PrecisionComboBox" 
-            Margin="155,259,0,0" 
+            Margin="55,223,0,0" 
             Width="275" 
             Height="59" 
             FontSize="22" 
             ItemsSource="{x:Bind precisions}"
-            SelectedIndex="0"
-            SelectedItem="{x:Bind selectedPrecision}" 
+            SelectedItem="{x:Bind selectedPrecision, Mode=TwoWay}" 
             PlaceholderText="Choose precision..."/>
 
-        <TextBlock HorizontalAlignment="Left" Margin="155,346,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
-        <TextBlock x:Name="ResultTextBlock" HorizontalAlignment="Left" Margin="155,388,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="115" Width="273" FontSize="22"/>
-        
-        <Button x:Name="SearchButton" Content="Search" Margin="155,527,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
+        <TextBlock HorizontalAlignment="Left" Margin="55,318,0,0" TextWrapping="Wrap" Text="Result:" VerticalAlignment="Top" FontSize="22"/>
+        <TextBlock x:Name="ResultTextBlock" HorizontalAlignment="Left" Margin="55,352,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="115" Width="273" FontSize="22"/>
+
+        <Button x:Name="SearchButton" Content="Search" Margin="55,491,0,0" VerticalAlignment="Top" Height="65" Width="275" FontSize="24" Click="searchButton_Click" RenderTransformOrigin="0.52,0.385"/>
     </Grid>
 </Page>

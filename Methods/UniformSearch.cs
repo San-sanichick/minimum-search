@@ -20,10 +20,10 @@ namespace minimum.Methods
 
         public override (double, double, int) Search()
         {
-            double[] segments   = new double[L];
-            double[] funcValues = new double[L];
+            double[] xValues = new double[L + 1];
+            double[] fValues = new double[L + 1];
 
-            double rangeStart = a, rangeEnd = b;
+            double ar = a, br = b;
 
             double result = 0;
             double resultFuncValue = 0;
@@ -32,56 +32,57 @@ namespace minimum.Methods
 
             for (int i = 0; i < N; i++)
             {
-                double length = (rangeEnd - rangeStart) / L;
+                double length = (br - ar) / L;
 
                 // define segments
-                for (int j = 0; j < L; j++)
+                for (int j = 0; j <= L; j++)
                 {
-                    segments[j] = rangeStart + j * length;
+                    xValues[j] = ar + j * length;
                 }
+
 
                 // find function values in the ends of those segments
-                for (int j = 0; j < L; j++)
+                for (int j = 0; j <= L; j++)
                 {
-                    funcValues[j] = f(segments[j]);
+                    fValues[j] = f(xValues[j]);
                 }
 
-                double minVal = Double.MaxValue;
-                int kIndex = 0;
+
+                double minVal = double.MaxValue;
+                int k = 0;
 
                 for (int j = 1; j <= L - 1; j++)
                 {
-                    if (minVal > funcValues[j])
+                    if (minVal > fValues[j])
                     {
-                        minVal = funcValues[j];
-                        kIndex = j;
+                        minVal = fValues[j];
+                        k = j;
                     }
                 }
 
-                rangeStart = segments[kIndex - 1];
-                rangeEnd   = segments[kIndex + 1];
+                ar = xValues[k - 1];
+                br = xValues[k + 1];
 
-                if (minVal > funcValues[0])
+                if (minVal > fValues[0])
                 {
-                    rangeStart = segments[0];
-                    rangeEnd   = segments[1];
+                    ar = xValues[0];
+                    br = xValues[1];
                 }
 
-                if (minVal > funcValues[L - 1])
+                if (minVal > fValues[L])
                 {
-                    rangeStart = segments[L - 1];
-                    rangeEnd   = segments[L - 2];
+                    ar = xValues[L - 1];
+                    br = xValues[L];
                 }
 
-                if (Math.Abs(rangeEnd - rangeStart) <= eps)
+                if (Math.Abs(br - ar) <= eps)
                 {
-                    result = (rangeStart + rangeEnd) / 2;
+                    result = (ar + br) / 2;
                     resultFuncValue = minVal;
                     actualIterations = i;
                     break;
                 }
             }
-            Debug.WriteLine($"{rangeEnd - rangeStart}\n{(rangeEnd - rangeStart) < eps}");
 
             return (result, resultFuncValue, actualIterations);
         }

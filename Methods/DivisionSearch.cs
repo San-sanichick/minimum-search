@@ -17,8 +17,8 @@ namespace minimum.Methods
             double result = 0;
             double resultFuncValue = 0;
 
-            double rangeStart = a;
-            double rangeEnd   = b;
+            double ar = a;
+            double br = b;
 
             double x0 = 0;
             double x01 = 0;
@@ -32,25 +32,25 @@ namespace minimum.Methods
             for (int i = 0; i < N; i++)
             {
                 // x0
-                x0 = (rangeEnd + rangeStart) / 2;
+                x0 = (br + ar) / 2;
 
-                x01 = (rangeStart + x0) / 2;
-                x02 = (x0 + rangeEnd) / 2;
+                x01 = (ar + x0) / 2;
+                x02 = (x0 + br) / 2;
 
                 fx01 = f(x01);
                 fx02 = f(x02);
 
                 if (fx01 < fx02)
                 {
-                    rangeEnd = x0;
+                    br = x0;
                 } else if (fx01 >= fx02)
                 {
-                    rangeStart = x0;
+                    ar = x0;
                 }
 
-                if ((rangeEnd - rangeStart) <= eps)
+                if (Math.Abs(br - ar) <= eps)
                 {
-                    result = (rangeStart + rangeEnd) / 2;
+                    result = (ar + br) / 2;
                     resultFuncValue = f(result);
                     actualIterations = i;
                     break;

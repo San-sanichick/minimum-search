@@ -40,7 +40,7 @@ namespace minimum.Methods
                     ar = xr1;
                 }
 
-                if ((br - ar) <= eps)
+                if (Math.Abs(br - ar) <= eps)
                 {
                     result = (ar + br) / 2;
                     resultFuncValue = f(result);

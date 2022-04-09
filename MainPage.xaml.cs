@@ -35,8 +35,8 @@ namespace minimum
         ObservableCollection<string> searchMethods { get; } = new ObservableCollection<string>();
         ObservableCollection<double> precisions { get; } = new ObservableCollection<double>();
         
-        string selectedMethod = null;
-        double selectedPrecision = 0;
+        string selectedMethod = "Uniform search";
+        double selectedPrecision = 0.001;
 
         private double f(double x)
         {
@@ -61,29 +61,37 @@ namespace minimum
         {
             var canvas = args.DrawingSession;
 
-            var fontStyle = new CanvasTextFormat();
-            fontStyle.FontSize = 12;
-            
-            canvas.DrawLine(
-                x0: ((float)A * scale) + offset,
-                y0: offset,
-                x1: ((float)B * scale) + offset,
-                y1: offset,
-                color: Colors.Black);
+            var fontStyle = new CanvasTextFormat
+            {
+                FontSize = 12
+            };
 
-            canvas.DrawLine(
-                x0: offset, 
-                y0: offset, 
-                x1: offset, 
-                y1: offset + (offset * 3),
-                color: Colors.Black);
+            canvas.DrawLine(x0: ((float)A * scale) + offset,
+                            y0: offset,
+                            x1: ((float)B * scale) + offset,
+                            y1: offset,
+                            color: Colors.Black);
+
+            canvas.DrawLine(x0: offset,
+                            y0: offset,
+                            x1: offset,
+                            y1: offset + (offset * 2),
+                            color: Colors.Black);
 
             for (double i = -Math.PI / 8; i < Math.PI / 2; i += (Math.PI / 16))
             {
                 double x = i * scale + offset;
 
-                canvas.DrawCircle((float)x, offset, 3, Colors.Blue);
-                canvas.DrawText(String.Format("{0:F2}", i), (float)x, offset - 20, Colors.Black, fontStyle);
+                canvas.FillCircle((float)x,
+                                  offset,
+                                  3,
+                                  Colors.Blue);
+                
+                canvas.DrawText(string.Format("{0:F2}", i),
+                                (float)x,
+                                offset - 20,
+                                Colors.Black,
+                                fontStyle);
             }
 
 
@@ -96,33 +104,45 @@ namespace minimum
 
                 canvas.DrawRectangle((float)newX, (float)newY, 1, 1, Colors.Black);
 
-                if (resultNumeric != 0)
+            }
+
+            if (resultNumeric != 0)
+            {
+                CanvasStrokeStyle strokeStyle = new CanvasStrokeStyle
                 {
-                    CanvasStrokeStyle strokeStyle = new CanvasStrokeStyle
-                    {
-                        DashStyle = CanvasDashStyle.DashDot
-                    };
+                    DashStyle = CanvasDashStyle.DashDot
+                };
 
-                    canvas.DrawLine(
-                            (float)(resultNumeric * scale + offset),
-                            (float)(resultFuncValue * -scale + offset),
-                            (float)(resultNumeric * scale + offset),
-                            offset, 
-                            Colors.Green, 0.5F, strokeStyle);
+                canvas.DrawLine(
+                        (float)(resultNumeric * scale + offset),
+                        (float)(resultFuncValue * -scale + offset),
+                        (float)(resultNumeric * scale + offset),
+                        offset, 
+                        Colors.Green, 0.5F, strokeStyle);
 
-                    canvas.DrawLine(
-                            (float)(resultNumeric * scale + offset),
-                            (float)(resultFuncValue * -scale + offset),
-                            (float)A * scale + offset,
-                            (float)(resultFuncValue * -scale + offset), 
-                            Colors.Green, 0.5F, strokeStyle);
+                canvas.DrawLine((float)((resultNumeric * scale) + offset),
+                                (float)(resultFuncValue * -scale + offset),
+                                offset,
+                                (float)(resultFuncValue * -scale + offset),
+                                Colors.Green,
+                                0.5F,
+                                strokeStyle);
 
-                    canvas.DrawCircle(
-                            (float)(resultNumeric * scale + offset), 
-                            (float)(resultFuncValue * -scale + offset), 
-                            4, 
-                            Colors.Red);
-                }
+                canvas.FillCircle(offset,
+                                  (float)(resultFuncValue * -scale + offset),
+                                  4,
+                                  Colors.Green);
+
+                canvas.DrawText(string.Format("{0:F2}", resultFuncValue),
+                                offset - 35,
+                                (float)(resultFuncValue * -scale + offset) - 10,
+                                Colors.Black,
+                                fontStyle);
+
+                canvas.FillCircle((float)(resultNumeric * scale + offset),
+                                  (float)(resultFuncValue * -scale + offset),
+                                  4,
+                                  Colors.Red);
             }
         }
 
@@ -150,7 +170,7 @@ namespace minimum
 
             (double x, double y, int N) res = search.Search();
 
-            resultNumeric = res.x;
+            resultNumeric   = res.x;
             resultFuncValue = res.y;
 
             ResultTextBlock.Text = $"x: {res.x}\nf(x): {res.y}\nIterations: {search.N}\nActual iterations: {res.N}";
