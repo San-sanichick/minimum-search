@@ -68,7 +68,7 @@ namespace minimum
             };
 
             float widthDependantOffset  = (float)canvasControl.ActualWidth  / 500 * offset;
-            float heightDependantOffset = (float)canvasControl.ActualHeight / 500 * offset;
+            float heightDependantOffset = (float)canvasControl.ActualHeight / 600 * offset;
 
             float widthDependantScale  = (float)canvasControl.ActualWidth  / 500 * scale;
             float heightDependantScale = (float)canvasControl.ActualHeight / 500 * scale;
@@ -82,7 +82,7 @@ namespace minimum
             canvas.DrawLine(x0: widthDependantOffset,
                             y0: heightDependantOffset,
                             x1: widthDependantOffset,
-                            y1: heightDependantOffset + (heightDependantOffset * 2.5F),
+                            y1: heightDependantOffset + (heightDependantOffset * 2.8F),
                             color: Colors.Black);
 
             for (double i = -Math.PI / 8; i < Math.PI / 2; i += (Math.PI / 16))
@@ -136,7 +136,7 @@ namespace minimum
                                 (float)(resultNumeric   *  widthDependantScale + widthDependantOffset),
                                 heightDependantOffset,
                                 Colors.Green,
-                                0.5F,
+                                1F,
                                 strokeStyle);
 
                 canvas.DrawLine((float)((resultNumeric   * widthDependantScale) + widthDependantOffset),
@@ -144,7 +144,7 @@ namespace minimum
                                 widthDependantOffset,
                                 (float)(resultFuncValue * -heightDependantScale + heightDependantOffset),
                                 Colors.Green,
-                                0.5F,
+                                1F,
                                 strokeStyle);
 
                 canvas.FillCircle(widthDependantOffset,

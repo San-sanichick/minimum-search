@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -68,6 +69,11 @@ namespace minimum
                     // навигации
                     rootFrame.Navigate(typeof(MainPage), e.Arguments);
                 }
+
+                ApplicationView
+                    .GetForCurrentView()
+                    .SetPreferredMinSize(new Size(500, 500));
+
                 // Обеспечение активности текущего окна
                 Window.Current.Activate();
             }
